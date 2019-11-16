@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//precisa ver como vai fazer pra por o formas
+typedef struct {
+    int forma;
+    int peso;
+} modos;
 
 void fibonacci(int degraus, int formas){
     int * fib = malloc(sizeof(int)*degraus);
@@ -26,16 +29,36 @@ void fibonacci(int degraus, int formas){
     free(fib);
 }
 
+void maximizar (modos * escada, int degraus, int formas){
+
+}
+
 int main(){
 
     int degraus, formas;
+    modos escada[200];
 
     printf("Insira o número de degraus\n");
     scanf("%d", &degraus);
     printf("Insira a quantidade formas que pode-se subir\n");
     scanf("%d", &formas);
 
+    if(formas > degraus){
+        printf("Solução inviável\n");
+        return 1;
+    }
+
     fibonacci(degraus, formas);
+
+    printf("Insira o peso de cada forma\n");
+    for (int i = 0; i < formas; i++){
+        escada[i].forma = i;
+        scanf("%d", &escada[i].peso);
+    }
+    
+    //assumo que o maior peso é a melhor escolha
+    maximizar(escada, degraus, formas);
+    
 
     return 0;
 }
