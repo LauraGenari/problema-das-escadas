@@ -9,14 +9,15 @@ void fibonacci(int degraus, int formas){
     int temp = fib[0]+fib[1];    
     /*enquanto não atingir o numero de formas, soma todos os anteriores*/
     for (int i = 2; i < formas; i++){
-        for (int j = i-1; j >= 0; j--){
-            fib[i] = temp;
-            temp += fib[i];
-            printf("%d, ", fib[i]);
-        }
+        fib[i] = temp;
+        temp += fib[i];
+        printf("%d, ", fib[i]);
+        
     }
 
     temp = 1;
+    //Imprime os 2 primeiros elementos
+    printf("%d, %d, ", fib[0], fib[1]);
     /*fib[i] recebe fib[i-1]+fib[i-2]+...+fib[i-formas], sendo que a variavel temp incrementa de 1,2...,formas.*/
     for (int i = formas; i < degraus; i++){
         while(temp != formas+1){
@@ -42,46 +43,40 @@ int max ( int a, int b){
     o peso que cada maneira de subir a escada tem. 
 */
 int wssp(int degraus, int formas){
-    /*vetor de pesos*/
     int escada[formas];
     int aux;
-    printf("Insira o peso de cada forma\n");
+    printf("Insira o peso de cada degrau\n");
     for (int i = 0; i < formas; i++){
         scanf("%d", &aux);
         escada[i] = aux;
     }
 
     int memo[formas+1][degraus+1]; 
-    /*inicializa a matriz de memoização com 0's*/
+
     for (int i = 0; i <= formas; i++){
         for (int j = 0; j <= degraus; j++){
            memo[i][j] = 0; 
         }        
     }
-    /*Percorre a matriz, calculando o maior peso para subir cada degraus*/
     for (int i = 1; i <= formas; i++){
         for(int j = 1; j <= degraus; j++){
             if(i > j){ 
-                /*se o peso de subir a escada com mais menos passos(mais degraus por passo) for menor,
-                assume-se que se irá subir com menos passos, que já foram calculados*/
                 memo[i][j] = memo[i-1][j];
             }
             else{
-                /*aux armazena quantos degraus faltam subir dado q ja foram subidos i passos,
-                para cada conjunto j de degraus*/
-                aux=j-i;
-                /*escolhe o maior peso dado o custo de subir da forma i*/
-                memo[i][j] = max(escada[i-1] + memo[i][aux], memo[i-1][j]);
+                aux = j-i;
+                memo[i][j] = max(memo[i-1][aux] + escada[i-1], memo[i-1][j]);
             }
         }
     }
-    /*mostra a matriz de memoização no terminal*/
-    printf(" j   ");
+
+    printf("     ");
     for (int i = 0; i <= degraus; i++)
     {
         printf("%d ", i);
     }
-    printf("\n");  
+    printf("\n");
+    
 
     for (int i = 0; i <= formas; i++){
         printf("i=%d  ", i);
@@ -100,11 +95,11 @@ int main(){
 
     printf("Insira o número de degraus\n");
     scanf("%d", &degraus);
-    printf("Insira a quantidade maxima de degraus (formas) que pode-se subir\n");
+    printf("Insira o número máximo de degraus que pode subir de uma vez\n");
     scanf("%d", &formas);
 
     /*caso o numero de formas de subir a escada seja maior que o número de degraus, é impossivel resolver o problema*/
-    if(formas > degraus){
+    if(formas > degraus || formas==0){
         printf("Solução inviável\n");
         return 1;
     }
